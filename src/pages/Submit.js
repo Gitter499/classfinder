@@ -26,7 +26,7 @@ const Submit = () => {
       <div className="flex flex-row justify-center items-top h-screen dark:text-white pb-12 px-10 text-2xl font-mono">
         <form
           onSubmit={() => handleFormSubmit()}
-          className="flex flex-col  h-screen  w-full md:w-3/4 "
+          className="flex flex-col  h-screen  w-full md:w-3/4  "
         >
           <label>Full name</label>
           <input
@@ -113,7 +113,7 @@ const Submit = () => {
           </select>
           <button
             type="submit"
-            className="bg-gradient-to-br bg-pink-900 hover:bg-purple-800 text-white  text-2xl md:w-1/4 w-full rounded-xl borderborder-white font-mono font-bold"
+            className="bg-gradient-to-br bg-pink-900 hover:bg-purple-800 text-white  text-2xl md:w-1/4 w-full rounded-xl border border-white font-mono font-bold mb-10"
           >
             Submit
           </button>
