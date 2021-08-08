@@ -35,7 +35,7 @@ const Home = () => {
         Made by Rafayel &nbsp;
         <a
           href="http://insta.rafayel.codes"
-          className="text-red-600 hover:underline"
+          className="text-red-600 hover:underline mb-2"
         >
           @rafayel.19
         </a>
