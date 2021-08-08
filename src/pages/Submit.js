@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+
 
 const Submit = () => {
+
+
   return (
     <div className="dark:bg-gray-900 bg-white">
       <h1 className="flex justify-center items-top dark:text-white text-black text-3xl pt-5 font-mono ">
@@ -11,7 +14,8 @@ const Submit = () => {
       </p>
       <div className="flex flex-row justify-center items-center h-screen dark:text-white">
         <form>
-            
+          <label>First Period</label>
+          
         </form>
       </div>
     </div>

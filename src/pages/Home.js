@@ -31,11 +31,11 @@ const Home = () => {
           Proceed
         </Link>
       </div>
-      <footer className="flex justify-center items-center dark:text-white text-black font-mono ">
+      <footer className="flex justify-center items-center dark:text-white text-black font-mono pb-5 ">
         Made by Rafayel &nbsp;
         <a
           href="http://insta.rafayel.codes"
-          className="text-red-600 hover:underline mb-2"
+          className="text-red-600 hover:underline "
         >
           @rafayel.19
         </a>
