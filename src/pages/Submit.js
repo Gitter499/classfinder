@@ -7,7 +7,7 @@ const Submit = () => {
 
   const classes = ["Lunch", "Algebra 1 Honors - Sawicki"];
   return (
-    <div className="dark:bg-gray-900 bg-white">
+    <div className="dark:bg-gray-900 bg-white static">
      <div className="flex flex-col justify-start items-center h-50 pt-10">
      <img
           src={logo}
@@ -113,7 +113,7 @@ const Submit = () => {
           </select>
           <button
             type="submit"
-            className="bg-gradient-to-br bg-pink-900 hover:bg-purple-800 text-white  text-2xl md:w-1/4 w-full rounded-xl border border-white font-mono font-bold mb-10"
+            className="bg-gradient-to-br bg-pink-900 hover:bg-purple-800 text-white  text-2xl md:w-1/4 w-full rounded-xl border border-white font-mono font-bold pb-10"
           >
             Submit
           </button>
