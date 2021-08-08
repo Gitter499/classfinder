@@ -113,7 +113,7 @@ const Submit = () => {
           </select>
           <button
             type="submit"
-            className="bg-gradient-to-br bg-pink-900 hover:bg-purple-800 text-white  text-2xl md:w-1/4 w-full rounded-xl border border-white font-mono font-bold pb-10"
+            className="bg-gradient-to-br bg-pink-900 hover:bg-purple-800 text-white  text-2xl md:w-1/4 w-full rounded-xl border border-white font-mono font-bold mb-10"
           >
             Submit
           </button>
