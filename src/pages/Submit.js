@@ -11,7 +11,8 @@ const Submit = () => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await axios.get(process.env.REACT_APP_URL + "/classes");
-      setClasses(data.data);
+      setClasses([...classes, ...data.data]);
+      console.log(classes);
     };
     fetchData();
 
