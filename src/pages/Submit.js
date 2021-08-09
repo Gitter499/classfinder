@@ -3,8 +3,12 @@ import axios from "axios";
 
 import logo from "../assets/CLASSFINder.png";
 
-const Submit = () => {
-  const handleFormSubmit = () => {};
+const Submit = React.memo(() => {
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+
+    console.log("Hello World");
+  };
 
   const [classes, setClasses] = useState([]);
 
@@ -39,7 +43,7 @@ const Submit = () => {
       </p>
       <div className="flex flex-row justify-center items-top h-screen dark:text-white pb-12 px-10 text-2xl font-mono">
         <form
-          onSubmit={() => handleFormSubmit()}
+          onSubmit={(e) => handleFormSubmit(e)}
           className="flex flex-col  h-screen  w-full md:w-3/4  "
         >
           <label>Full name</label>
@@ -135,6 +139,6 @@ const Submit = () => {
       </div>
     </div>
   );
-};
+});
 
 export default Submit;
