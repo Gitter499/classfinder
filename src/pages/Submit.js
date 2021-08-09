@@ -1,22 +1,34 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 import logo from "../assets/CLASSFINder.png";
 
 const Submit = () => {
   const handleFormSubmit = () => {};
 
-  const classes = ["Lunch", "Algebra 1 Honors - Sawicki"];
+  const [classes, setClasses] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await axios.get(process.env.REACT_APP_URL + "/classes");
+      setClasses(data.data);
+    };
+    fetchData();
+
+    return () => {};
+  }, []);
+
   return (
     <div className="dark:bg-gray-900 bg-white static">
-     <div className="flex flex-col justify-start items-center h-50 pt-10">
-     <img
+      <div className="flex flex-col justify-start items-center h-50 pt-10">
+        <img
           src={logo}
           alt="logo"
           className="rounded-3xl border-4 border-black"
           width="150vh"
           height="150vh"
         />
-     </div>
+      </div>
       <h1 className="flex justify-center items-top dark:text-white text-black text-3xl pt-5 font-mono ">
         Input your classes{" "}
       </h1>
