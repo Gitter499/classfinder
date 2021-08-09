@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-
 import { useHistory } from "react-router-dom";
 import logo from "../assets/CLASSFINder.png";
 
 const Submit = React.memo(() => {
   const [classes, setClasses] = useState([]);
   const [name, setName] = useState("");
+  const [userClasses, setUserClasses] = useState([]);
   const history = useHistory();
 
   const handleFormSubmit = (e) => {
@@ -15,16 +15,30 @@ const Submit = React.memo(() => {
 
     console.log("Hello World");
 
-    axios.post(process.env.REACT_APP_URL);
+    axios
+      .post(process.env.REACT_APP_URL + "/submit", {
+        name: name,
+        classes: userClasses,
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
   };
 
+  // eslint-disable-next-line no-unused-vars
   const handleNameChange = (e) => {
+    e.preventDefault();
     setName(e.target.value);
   };
-
-  const handleSelectChange = (e, id) => {
-    console.log(id);
+  // eslint-disable-next-line no-unused-vars
+  const handleSelect = (e) => {
+    e.preventDefault();
+    setUserClasses([...userClasses, e.target.value]);
   };
+
   useEffect(() => {
     const fetchData = async () => {
       const data = await axios.get(process.env.REACT_APP_URL + "/classes");
@@ -64,6 +78,7 @@ const Submit = React.memo(() => {
             placeholder="John Doe"
             className="text-black rounded-xl border-2 border-purple-600 bg-gradient-to-br mt-2 mb-2"
             value={name}
+            onChange={handleNameChange}
           />
           <label>First Period</label>
           <select
@@ -71,6 +86,7 @@ const Submit = React.memo(() => {
             id="class_selector_period_1"
             placeholder="lunch"
             className="text-black rounded-xl border-2 border-purple-600 bg-gradient-to-br mt-2 mb-2"
+            onChange={handleSelect}
           >
             {classes.map((elem, idx) => (
               <option key={idx}> {elem} </option>
@@ -81,6 +97,7 @@ const Submit = React.memo(() => {
             name="class_selector_period_2"
             id="class_selector_period_2"
             placeholder="lunch"
+            onChange={handleSelect}
             className="text-black rounded-xl border-2 border-purple-600 bg-gradient-to-br mt-2 mb-2"
           >
             {classes.map((elem, idx) => (
@@ -92,6 +109,7 @@ const Submit = React.memo(() => {
             name="class_selector_period_3"
             id="class_selector_period_3"
             placeholder="lunch"
+            onChange={handleSelect}
             className="text-black rounded-xl border-2 border-purple-600 bg-gradient-to-br mt-2 mb-2"
           >
             {classes.map((elem, idx) => (
@@ -103,6 +121,7 @@ const Submit = React.memo(() => {
             name="class_selector_period_4"
             id="class_selector_period_4"
             placeholder="lunch"
+            onChange={handleSelect}
             className="text-black rounded-xl border-2 border-purple-600 bg-gradient-to-br mt-2 mb-2"
           >
             {classes.map((elem, idx) => (
@@ -114,6 +133,7 @@ const Submit = React.memo(() => {
             name="class_selector_period_5"
             id="class_selector_period_5"
             placeholder="lunch"
+            onChange={handleSelect}
             className="text-black rounded-xl border-2 border-purple-600 bg-gradient-to-br mt-2 mb-2"
           >
             {classes.map((elem, idx) => (
@@ -125,6 +145,7 @@ const Submit = React.memo(() => {
             name="class_selector_period_6"
             id="class_selector_period_6"
             placeholder="lunch"
+            onChange={handleSelect}
             className="text-black rounded-xl border-2 border-purple-600 bg-gradient-to-br mt-2 mb-2"
           >
             {classes.map((elem, idx) => (
@@ -136,6 +157,7 @@ const Submit = React.memo(() => {
             name="class_selector_period_7"
             id="class_selector_period_7"
             placeholder="lunch"
+            onChange={handleSelect}
             className="text-black rounded-xl border-2 border-purple-600 bg-gradient-to-br mt-2 mb-5"
           >
             {classes.map((elem, idx) => (
