@@ -1,22 +1,34 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+
+import { useHistory } from "react-router-dom";
 import logo from "../assets/CLASSFINder.png";
 
 const Submit = React.memo(() => {
+  const [classes, setClasses] = useState([]);
+  const [name, setName] = useState("");
+  const history = useHistory();
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
     console.log("Hello World");
+
+    axios.post(process.env.REACT_APP_URL);
   };
 
-  const [classes, setClasses] = useState([]);
+  const handleNameChange = (e) => {
+    setName(e.target.value);
+  };
 
+  const handleSelectChange = (e, id) => {
+    console.log(id);
+  };
   useEffect(() => {
     const fetchData = async () => {
       const data = await axios.get(process.env.REACT_APP_URL + "/classes");
       setClasses([...classes, ...data.data]);
-      console.log(classes);
     };
     fetchData();
 
@@ -43,7 +55,7 @@ const Submit = React.memo(() => {
       </p>
       <div className="flex flex-row justify-center items-top h-screen dark:text-white pb-12 px-10 text-2xl font-mono">
         <form
-          onSubmit={(e) => handleFormSubmit(e)}
+          onSubmit={handleFormSubmit}
           className="flex flex-col  h-screen  w-full md:w-3/4  "
         >
           <label>Full name</label>
@@ -51,6 +63,7 @@ const Submit = React.memo(() => {
             type="text"
             placeholder="John Doe"
             className="text-black rounded-xl border-2 border-purple-600 bg-gradient-to-br mt-2 mb-2"
+            value={name}
           />
           <label>First Period</label>
           <select
