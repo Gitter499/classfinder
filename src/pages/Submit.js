@@ -2,21 +2,31 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import logo from "../assets/CLASSFINder.png";
+import Cookies from "js-cookie";
+
+import Results from "./Results";
 
 const Submit = React.memo(() => {
   const [classes, setClasses] = useState([]);
   const [name, setName] = useState("");
-  const [userClasses, setUserClasses] = useState([]);
- 
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
-    console.log("Hello World");
-
+    const arrayOfValues = [
+      e.target["period-1"].value,
+      e.target["period-2"].value,
+      e.target["period-3"].value,
+      e.target["period-4"].value,
+      e.target["period-5"].value,
+      e.target["period-6"].value,
+      e.target["period-7"].value,
+    ];
+    
     axios
       .post(process.env.REACT_APP_URL + "/submit", {
         name: name,
-        classes: userClasses,
+        classes: arrayOfValues,
       })
       .then((res) => {
         console.log(res.data);
@@ -28,14 +38,9 @@ const Submit = React.memo(() => {
 
   // eslint-disable-next-line no-unused-vars
   const handleNameChange = (e) => {
-    e.preventDefault();
     setName(e.target.value);
   };
   // eslint-disable-next-line no-unused-vars
-  const handleSelect = (e) => {
-    e.preventDefault();
-    setUserClasses([...userClasses, e.target.value]);
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,9 +53,13 @@ const Submit = React.memo(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return (
-    <div className="dark:bg-gray-900 bg-white static">
-      <div className="flex flex-col justify-start items-center h-50 pt-10">
+  const studentName = Cookies.get("studentName");
+
+  return studentName ? (
+    <Results />
+  ) : (
+    <div className="dark:bg-gray-900 bg-white pb-32">
+      <div className="flex flex-col justify-start items-center h-50 pt-10 ">
         <img
           src={logo}
           alt="logo"
@@ -78,24 +87,23 @@ const Submit = React.memo(() => {
             value={name}
             onChange={handleNameChange}
           />
+
           <label>First Period</label>
           <select
-            name="class_selector_period_1"
-            id="class_selector_period_1"
-            placeholder="lunch"
+            name="period-1"
             className="text-black rounded-xl border-2 border-purple-600 bg-gradient-to-br mt-2 mb-2"
-            onChange={handleSelect}
           >
             {classes.map((elem, idx) => (
-              <option key={idx}> {elem} </option>
+              <option key={idx} value={elem}>
+                {" "}
+                {elem}{" "}
+              </option>
             ))}
           </select>
+
           <label>Second Period</label>
           <select
-            name="class_selector_period_2"
-            id="class_selector_period_2"
-            placeholder="lunch"
-            onChange={handleSelect}
+            name="period-2"
             className="text-black rounded-xl border-2 border-purple-600 bg-gradient-to-br mt-2 mb-2"
           >
             {classes.map((elem, idx) => (
@@ -104,10 +112,7 @@ const Submit = React.memo(() => {
           </select>
           <label>Third Period</label>
           <select
-            name="class_selector_period_3"
-            id="class_selector_period_3"
-            placeholder="lunch"
-            onChange={handleSelect}
+            name="period-3"
             className="text-black rounded-xl border-2 border-purple-600 bg-gradient-to-br mt-2 mb-2"
           >
             {classes.map((elem, idx) => (
@@ -116,10 +121,7 @@ const Submit = React.memo(() => {
           </select>
           <label>Fourth Period</label>
           <select
-            name="class_selector_period_4"
-            id="class_selector_period_4"
-            placeholder="lunch"
-            onChange={handleSelect}
+            name="period-4"
             className="text-black rounded-xl border-2 border-purple-600 bg-gradient-to-br mt-2 mb-2"
           >
             {classes.map((elem, idx) => (
@@ -128,10 +130,7 @@ const Submit = React.memo(() => {
           </select>
           <label>Fifth Period</label>
           <select
-            name="class_selector_period_5"
-            id="class_selector_period_5"
-            placeholder="lunch"
-            onChange={handleSelect}
+            name="period-5"
             className="text-black rounded-xl border-2 border-purple-600 bg-gradient-to-br mt-2 mb-2"
           >
             {classes.map((elem, idx) => (
@@ -140,10 +139,7 @@ const Submit = React.memo(() => {
           </select>
           <label>Sixth Period</label>
           <select
-            name="class_selector_period_6"
-            id="class_selector_period_6"
-            placeholder="lunch"
-            onChange={handleSelect}
+            name="period-6"
             className="text-black rounded-xl border-2 border-purple-600 bg-gradient-to-br mt-2 mb-2"
           >
             {classes.map((elem, idx) => (
@@ -152,10 +148,7 @@ const Submit = React.memo(() => {
           </select>
           <label>Seventh Period</label>
           <select
-            name="class_selector_period_7"
-            id="class_selector_period_7"
-            placeholder="lunch"
-            onChange={handleSelect}
+            name="period-7"
             className="text-black rounded-xl border-2 border-purple-600 bg-gradient-to-br mt-2 mb-5"
           >
             {classes.map((elem, idx) => (
