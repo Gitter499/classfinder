@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-import { useHistory } from "react-router-dom";
 import logo from "../assets/CLASSFINder.png";
 
 const Submit = React.memo(() => {
   const [classes, setClasses] = useState([]);
   const [name, setName] = useState("");
   const [userClasses, setUserClasses] = useState([]);
-  const history = useHistory();
-
+ 
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
