@@ -27,11 +27,10 @@ const Submit = React.memo(() => {
         name: name,
         classes: arrayOfValues,
       })
-      .then((res) => res.json())
       .then((response) => {
-        setData([...data, response]);
-        console.log(response);
-        localStorage.setItem("studentData", JSON.stringify(response));
+        setData([...data, ...response.data.data]);
+        console.log(response.data.data);
+        localStorage.setItem("studentData", JSON.stringify(response.data.data));
       })
       .catch((e) => {
         console.error(e);
@@ -53,8 +52,8 @@ const Submit = React.memo(() => {
 
   useEffect(() => {
     const studentData = localStorage.getItem("studentData");
-    console.log(studentData);
-    if (studentData !== undefined) {
+    //console.log(studentData);
+    if (studentData && data === []) {
       setData([...data, ...JSON.parse(studentData)]);
       console.log(data);
       setLoading(false);
@@ -73,19 +72,21 @@ const Submit = React.memo(() => {
     <div className="dark:bg-gray-900 bg-white pb-32">
       {!loading ? (
         data?.map((elem, idx) => (
-          <table
-            key={idx}
-            className="flex flex-col md:justify-start md:items-stretch border-4 border-purple-700"
-          >
+          <>
             <h1>{elem.className}</h1>
-            <tbody>
-              <th>Classes</th>
+            <table
+              key={idx}
+              className="flex flex-col md:justify-start md:items-stretch border-4 border-purple-700"
+            >
+              <tbody>
+                <th>Classes</th>
 
-              {elem.students.map((elem, idx) => (
-                <tr key={idx}>{elem}</tr>
-              ))}
-            </tbody>
-          </table>
+                {elem.students.map((elem, idx) => (
+                  <tr key={idx}>{elem}</tr>
+                ))}
+              </tbody>
+            </table>
+          </>
         ))
       ) : (
         <>
