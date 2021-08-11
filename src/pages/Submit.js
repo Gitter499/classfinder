@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 
 import logo from "../assets/CLASSFINder.png";
@@ -8,11 +8,13 @@ const Submit = React.memo(() => {
   const [name, setName] = useState("");
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [submitted, setSubmitted] = useState(false);
+  const [dataLoaded, setDataLoaded] = useState(false);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
-    const arrayOfValues = [
+    const arrayOfSelects = [
       e.target["period-1"].value,
       e.target["period-2"].value,
       e.target["period-3"].value,
@@ -21,14 +23,17 @@ const Submit = React.memo(() => {
       e.target["period-6"].value,
       e.target["period-7"].value,
     ];
+    localStorage.setItem("arrayOfSelects", JSON.stringify(arrayOfSelects));
+    localStorage.setItem("studentName", name);
 
     axios
       .post(process.env.REACT_APP_URL + "/submit", {
         name: name,
-        classes: arrayOfValues,
+        classes: arrayOfSelects,
       })
       .then((response) => {
         setData([...data, ...response.data.data]);
+        setSubmitted(true);
         console.log(response.data.data);
         localStorage.setItem("studentData", JSON.stringify(response.data.data));
       })
@@ -50,11 +55,37 @@ const Submit = React.memo(() => {
   };
   // eslint-disable-next-line no-unused-vars
 
+  const handleUpdate = (e) => {
+    const arrayOfSelects = JSON.parse(localStorage.getItem("arrayOfSelects"));
+    const studentName = localStorage.getItem("studentName");
+    axios
+      .post(process.env.REACT_APP_URL + "/update", {
+        name: studentName,
+        classes: arrayOfSelects,
+      })
+      .then((response) => {
+        console.log(response.data.data);
+        localStorage.setItem("studentData", JSON.stringify(response.data.data));
+      })
+      .catch((e) => {
+        console.error(e);
+      })
+      .finally(() => {
+        const studentData = localStorage.getItem("studentData");
+
+        setData(JSON.parse(studentData));
+        setDataLoaded(true);
+
+        setLoading(false);
+      });
+  };
+
   useEffect(() => {
     const studentData = localStorage.getItem("studentData");
-    //console.log(studentData);
-    if (studentData && data === []) {
+    console.log(studentData);
+    if (studentData && !submitted && !dataLoaded) {
       setData([...data, ...JSON.parse(studentData)]);
+      setDataLoaded(true);
       console.log(data);
       setLoading(false);
     }
@@ -71,23 +102,28 @@ const Submit = React.memo(() => {
   return (
     <div className="dark:bg-gray-900 bg-white pb-32">
       {!loading ? (
-        data?.map((elem, idx) => (
-          <>
-            <h1>{elem.className}</h1>
-            <table
-              key={idx}
-              className="flex flex-col md:justify-start md:items-stretch border-4 border-purple-700"
-            >
-              <tbody>
-                <th>Classes</th>
+        <>
+          {data?.map((elem, idx) => (
+            <>
+              <h1>{elem.className}</h1>
+              <table
+                key={idx}
+                className="flex flex-col md:justify-start md:items-baseline border-2 border-black text-white"
+              >
+                <tbody>
+                  <tr>
+                    <th>Classes</th>
+                  </tr>
 
-                {elem.students.map((elem, idx) => (
-                  <tr key={idx}>{elem}</tr>
-                ))}
-              </tbody>
-            </table>
-          </>
-        ))
+                  {elem.students.map((elem, idx) => (
+                    <tr key={idx}>{elem}</tr>
+                  ))}
+                </tbody>
+              </table>
+            </>
+          ))}
+          <button onClick={handleUpdate}>Update</button>
+        </>
       ) : (
         <>
           <div className="flex flex-col justify-start items-center h-50 pt-10 ">
