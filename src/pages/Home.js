@@ -5,9 +5,12 @@ import logo from "../assets/CLASSFINder.png";
 const Home = () => {
   return (
     <div className="bg-white dark:bg-gray-900">
-        <Link to ="/auth/admin" className="flex justify-end items-end dark:text-white text-black font-mono mx-4 pt-4 hover:underline">
-            Admin
-        </Link>
+      <Link
+        to="/auth/admin"
+        className="flex justify-end items-end dark:text-white text-black font-mono mx-4 pt-4 hover:underline"
+      >
+        Admin
+      </Link>
       <div className="flex flex-col justify-center items-center h-screen  text-black dark:text-white font-mono ">
         <img
           src={logo}
@@ -24,9 +27,10 @@ const Home = () => {
           school, contact me)
         </p>
         <br />
+
         <Link
           to="/submit"
-          className="bg-blue-600 hover:bg-blue-900 text-white  text-2xl py-2 px-4 rounded-xl border border-white"
+          className="bg-blue-600 hover:bg-blue-900 text-white  text-2xl py-2 px-4 rounded-xl border border-white disabled:opacity-50"
         >
           Proceed
         </Link>
