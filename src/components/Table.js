@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const DataTable = ({ data, submitted }) => {
+const DataTable = ({ data }) => {
   const [tableData, setTableData] = useState([]);
 
   const handleUpdate = (e) => {
@@ -30,12 +30,9 @@ const DataTable = ({ data, submitted }) => {
 
   };
   useEffect(() => {
-    if (!submitted) {
-      const studentData = localStorage.getItem("studentData");
-      studentData && setTableData(studentData);
-    } else {
+   
       setTableData(data);
-    }
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (

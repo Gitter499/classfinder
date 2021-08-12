@@ -9,7 +9,6 @@ const Submit = React.memo(() => {
   const [name, setName] = useState("");
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [submitted, setSubmitted] = useState(false);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -38,7 +37,7 @@ const Submit = React.memo(() => {
       .then((response) => {
         console.log(response.data.data);
         setData([...data, ...response.data.data]);
-        setSubmitted(true);
+
         localStorage.setItem("studentData", JSON.stringify(response.data.data));
       })
       .catch((e) => {
@@ -46,22 +45,20 @@ const Submit = React.memo(() => {
       })
       .finally(() => {
         !localStorage.getItem("studentData")
-          ? setLoading(false)
-          : alert("An error occured! Please refresh the page");
+          ? alert("An error occured! Please refresh the page")
+          : setLoading(false);
       });
   };
 
-  // eslint-disable-next-line no-unused-vars
   const handleNameChange = (e) => {
     setName(e.target.value);
   };
-  // eslint-disable-next-line no-unused-vars
 
   useEffect(() => {
     const studentData = localStorage.getItem("studentData") || undefined;
 
     if (studentData) {
-      setData(JSON.parse(studentData));
+      setData([...data, ...JSON.parse(studentData)]);
       setLoading(false);
     }
 
@@ -78,7 +75,7 @@ const Submit = React.memo(() => {
     <div className="dark:bg-gray-900 bg-white pb-32">
       {!loading ? (
         <>
-          <DataTable data={data} submitted={submitted} />
+          <DataTable data={data} />
         </>
       ) : (
         <>
