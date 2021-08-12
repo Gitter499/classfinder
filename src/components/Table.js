@@ -15,24 +15,16 @@ const DataTable = ({ data }) => {
       })
       .then((response) => {
         console.log(response.data.data);
+        setTableData(response.data.data);
         localStorage.setItem("studentData", JSON.stringify(response.data.data));
       })
       .catch((e) => {
         console.error(e);
-      })
-      .finally(() => {
-        const studentData = localStorage.getItem("studentData");
-        if (!studentData) {
-          alert("An error occured! Please refresh the page");
-        }
-        setTableData(JSON.parse(studentData));
       });
-
   };
   useEffect(() => {
-   
-      setTableData(data);
-    
+    setTableData(data);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
@@ -51,7 +43,9 @@ const DataTable = ({ data }) => {
           </div>
           <ul>
             {elem.students.map((student, idx) => (
-              <li key={idx}>{student}</li>
+              <li key={idx} className="underline">
+                {student}
+              </li>
             ))}
           </ul>
         </div>
