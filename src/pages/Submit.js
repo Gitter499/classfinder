@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import logo from "../assets/CLASSFINder.png";
+import DataTable from "../components/Table";
 
 const Submit = React.memo(() => {
   const [classes, setClasses] = useState([]);
@@ -9,7 +10,6 @@ const Submit = React.memo(() => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [submitted, setSubmitted] = useState(false);
-  const [dataLoaded, setDataLoaded] = useState(false);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -23,7 +23,11 @@ const Submit = React.memo(() => {
       e.target["period-6"].value,
       e.target["period-7"].value,
     ];
-    localStorage.setItem("arrayOfSelects", JSON.stringify(arrayOfSelects));
+
+    localStorage.setItem(
+      "classesDeclaredByUser",
+      JSON.stringify(arrayOfSelects)
+    );
     localStorage.setItem("studentName", name);
 
     axios
@@ -32,20 +36,18 @@ const Submit = React.memo(() => {
         classes: arrayOfSelects,
       })
       .then((response) => {
+        console.log(response.data.data);
         setData([...data, ...response.data.data]);
         setSubmitted(true);
-        console.log(response.data.data);
         localStorage.setItem("studentData", JSON.stringify(response.data.data));
       })
       .catch((e) => {
         console.error(e);
       })
       .finally(() => {
-        const studentData = localStorage.getItem("studentData");
-
-        if (studentData !== undefined) {
-          setLoading(false);
-        }
+        !localStorage.getItem("studentData")
+          ? setLoading(false)
+          : alert("An error occured! Please refresh the page");
       });
   };
 
@@ -55,45 +57,18 @@ const Submit = React.memo(() => {
   };
   // eslint-disable-next-line no-unused-vars
 
-  const handleUpdate = (e) => {
-    const arrayOfSelects = JSON.parse(localStorage.getItem("arrayOfSelects"));
-    const studentName = localStorage.getItem("studentName");
-    axios
-      .post(process.env.REACT_APP_URL + "/update", {
-        name: studentName,
-        classes: arrayOfSelects,
-      })
-      .then((response) => {
-        console.log(response.data.data);
-        localStorage.setItem("studentData", JSON.stringify(response.data.data));
-      })
-      .catch((e) => {
-        console.error(e);
-      })
-      .finally(() => {
-        const studentData = localStorage.getItem("studentData");
-
-        setData(JSON.parse(studentData));
-        setDataLoaded(true);
-
-        setLoading(false);
-      });
-  };
-
   useEffect(() => {
-    const studentData = localStorage.getItem("studentData");
-    console.log(studentData);
-    if (studentData && !submitted && !dataLoaded) {
-      setData([...data, ...JSON.parse(studentData)]);
-      setDataLoaded(true);
-      console.log(data);
+    const studentData = localStorage.getItem("studentData") || undefined;
+
+    if (studentData) {
+      setData(JSON.parse(studentData));
       setLoading(false);
     }
-    const fetchData = async () => {
+
+    (async () => {
       const data = await axios.get(process.env.REACT_APP_URL + "/classes");
       setClasses([...classes, ...data.data]);
-    };
-    fetchData();
+    })();
 
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -103,26 +78,7 @@ const Submit = React.memo(() => {
     <div className="dark:bg-gray-900 bg-white pb-32">
       {!loading ? (
         <>
-          {data?.map((elem, idx) => (
-            <>
-              <h1>{elem.className}</h1>
-              <table
-                key={idx}
-                className="flex flex-col md:justify-start md:items-baseline border-2 border-black text-white"
-              >
-                <tbody>
-                  <tr>
-                    <th>Classes</th>
-                  </tr>
-
-                  {elem.students.map((elem, idx) => (
-                    <tr key={idx}>{elem}</tr>
-                  ))}
-                </tbody>
-              </table>
-            </>
-          ))}
-          <button onClick={handleUpdate}>Update</button>
+          <DataTable data={data} submitted={submitted} />
         </>
       ) : (
         <>
